@@ -16,7 +16,7 @@ If the hot-vs-normal bias gap survives both corrections, that's evidence
 the effect isn't just an easily-removable static bias.
 
 Usage:
-    python mos_correction.py --in data/paris_leadtime.parquet --out-dir data
+    python mos_correction.py --in data/paris/leadtime.parquet --out-dir data/paris
 """
 
 import argparse
@@ -76,7 +76,7 @@ def compare_hot_vs_normal(test: pd.DataFrame, error_col: str) -> pd.DataFrame:
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--in", dest="inp", default="data/paris_leadtime.parquet")
+    p.add_argument("--in", dest="inp", default="data/paris/leadtime.parquet")
     p.add_argument("--out-dir", default="data")
     p.add_argument("--train-frac", type=float, default=0.7)
     p.add_argument("--climatology-window", type=int, default=7)

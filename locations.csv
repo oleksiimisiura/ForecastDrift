@@ -1,0 +1,10 @@
+name,lat,lon,region
+paris,48.8566,2.3522,Paris basin
+lyon,45.7640,4.8357,Rhone valley (continental)
+marseille,43.2965,5.3698,Mediterranean
+toulouse,43.6047,1.4442,Southwest
+nantes,47.2184,-1.5536,Atlantic coast
+strasbourg,48.5734,7.7521,Northeast (continental)
+lille,50.6292,3.0573,North
+bordeaux,44.8378,-0.5792,Southwest Atlantic
+nice,43.7102,7.2620,Cote d'Azur

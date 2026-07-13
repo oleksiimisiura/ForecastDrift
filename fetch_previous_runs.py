@@ -8,7 +8,7 @@ error (actual - forecast).
 
 Usage:
     python fetch_previous_runs.py --lat 48.8566 --lon 2.3522 \
-        --start 2022-01-01 --end 2026-07-01 --out data/paris.parquet
+        --start 2022-01-01 --end 2026-07-01 --out data/paris/leadtime.parquet
 """
 
 import argparse

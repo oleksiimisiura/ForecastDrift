@@ -14,7 +14,7 @@ Intended to run once per day (e.g. via a scheduled task). Each run:
 
 Usage:
     python fetch_single_run_daily.py --lat 48.8566 --lon 2.3522 \
-        --out data/paris_10day_archive.csv
+        --out data/paris/10day_archive.csv
 """
 
 import argparse
