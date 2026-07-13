@@ -1,0 +1,50 @@
+name: Daily data collection
+
+on:
+  schedule:
+    # 06:00 UTC daily. The 10-day-lead run needs yesterday's date to be
+    # fully in the past everywhere relevant, and GFS/ECMWF runs for
+    # yesterday-10d are long since archived by this time.
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Refresh 1/3/5/7-day lead-time dataset
+        run: |
+          python fetch_previous_runs.py \
+            --lat 48.8566 --lon 2.3522 \
+            --start 2022-01-01 --end $(date -u +%Y-%m-%d) \
+            --out data/paris_leadtime.parquet
+
+      - name: Append today's 10-day-lead observation
+        run: |
+          python fetch_single_run_daily.py \
+            --lat 48.8566 --lon 2.3522 \
+            --out data/paris_10day_archive.csv
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "Daily data update: $(date -u +%Y-%m-%d)"
+            git push
+          fi
