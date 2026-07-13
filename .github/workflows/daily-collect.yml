@@ -44,11 +44,14 @@ jobs:
               --out "data/$name/10day_archive.csv"
           done
 
+      - name: Rebuild static site data
+        run: python export_site_data.py --locations-file locations.csv --out-dir docs/data
+
       - name: Commit and push updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/ docs/data/
           if git diff --cached --quiet; then
             echo "No data changes."
           else

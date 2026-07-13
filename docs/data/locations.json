@@ -1,0 +1,56 @@
+[
+  {
+    "name": "paris",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "region": "Paris basin"
+  },
+  {
+    "name": "lyon",
+    "lat": 45.764,
+    "lon": 4.8357,
+    "region": "Rhone valley (continental)"
+  },
+  {
+    "name": "marseille",
+    "lat": 43.2965,
+    "lon": 5.3698,
+    "region": "Mediterranean"
+  },
+  {
+    "name": "toulouse",
+    "lat": 43.6047,
+    "lon": 1.4442,
+    "region": "Southwest"
+  },
+  {
+    "name": "nantes",
+    "lat": 47.2184,
+    "lon": -1.5536,
+    "region": "Atlantic coast"
+  },
+  {
+    "name": "strasbourg",
+    "lat": 48.5734,
+    "lon": 7.7521,
+    "region": "Northeast (continental)"
+  },
+  {
+    "name": "lille",
+    "lat": 50.6292,
+    "lon": 3.0573,
+    "region": "North"
+  },
+  {
+    "name": "bordeaux",
+    "lat": 44.8378,
+    "lon": -0.5792,
+    "region": "Southwest Atlantic"
+  },
+  {
+    "name": "nice",
+    "lat": 43.7102,
+    "lon": 7.262,
+    "region": "Cote d'Azur"
+  }
+]
