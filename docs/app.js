@@ -120,7 +120,7 @@ function baseLineOptions(yLabel) {
       tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}°C` } },
     },
     scales: {
-      x: { title: { display: true, text: "Lead time (days)", color: COLORS.text }, ticks: { color: COLORS.muted }, grid: { color: COLORS.grid } },
+      x: { title: { display: true, text: "Délai (jours)", color: COLORS.text }, ticks: { color: COLORS.muted }, grid: { color: COLORS.grid } },
       y: { title: { display: true, text: yLabel, color: COLORS.text }, ticks: { color: COLORS.muted }, grid: { color: COLORS.grid } },
     },
   };
@@ -134,12 +134,12 @@ function renderBiasChart(summary) {
     data: {
       labels: summary.map(s => s.lead_days),
       datasets: [
-        { label: "Overall", data: summary.map(s => s.bias), borderColor: COLORS.overall, borderDash: [6, 4], pointRadius: 4, tension: 0 },
-        { label: "Normal days", data: summary.map(s => s.bias_normal), borderColor: COLORS.normal, backgroundColor: COLORS.normal, pointRadius: 5, borderWidth: 2, tension: 0 },
-        { label: "Anomalous heat days", data: summary.map(s => s.bias_hot), borderColor: COLORS.hot, backgroundColor: COLORS.hot, pointRadius: 5, borderWidth: 2, tension: 0 },
+        { label: "Ensemble", data: summary.map(s => s.bias), borderColor: COLORS.overall, borderDash: [6, 4], pointRadius: 4, tension: 0 },
+        { label: "Jours normaux", data: summary.map(s => s.bias_normal), borderColor: COLORS.normal, backgroundColor: COLORS.normal, pointRadius: 5, borderWidth: 2, tension: 0 },
+        { label: "Jours de chaleur anomale", data: summary.map(s => s.bias_hot), borderColor: COLORS.hot, backgroundColor: COLORS.hot, pointRadius: 5, borderWidth: 2, tension: 0 },
       ],
     },
-    options: baseLineOptions("Mean error, actual − forecast (°C)"),
+    options: baseLineOptions("Erreur moyenne, réel − prévision (°C)"),
   });
 }
 
@@ -155,7 +155,7 @@ function renderErrorChart(summary) {
         { label: "RMSE", data: summary.map(s => s.rmse), borderColor: COLORS.hot, backgroundColor: COLORS.hot, pointRadius: 5, borderWidth: 2, tension: 0 },
       ],
     },
-    options: baseLineOptions("Error (°C)"),
+    options: baseLineOptions("Erreur (°C)"),
   });
 }
 
@@ -164,13 +164,13 @@ function renderStatTiles(summary) {
   const at7 = summary.find(s => s.lead_days === 7) || summary[summary.length - 1];
   if (!at7) { row.innerHTML = ""; return; }
   const gap = (at7.bias_hot ?? NaN) - (at7.bias_normal ?? NaN);
-  const pText = at7.p_value === null ? "n/a" : at7.p_value < 0.001 ? "< 0.001" : at7.p_value.toFixed(3);
+  const pText = at7.p_value === null ? "n/d" : at7.p_value < 0.001 ? "< 0.001" : at7.p_value.toFixed(3);
   const tiles = [
-    { label: `Дней в выборке`, value: at7.n },
-    { label: `Дней аномальной жары`, value: at7.n_hot },
-    { label: `Bias, норма (${at7.lead_days}д)`, value: fmt(at7.bias_normal) },
-    { label: `Bias, жара (${at7.lead_days}д)`, value: fmt(at7.bias_hot) },
-    { label: `Разница`, value: fmt(gap) },
+    { label: `Jours dans l'échantillon`, value: at7.n },
+    { label: `Jours de chaleur anomale`, value: at7.n_hot },
+    { label: `Biais, normal (${at7.lead_days}j)`, value: fmt(at7.bias_normal) },
+    { label: `Biais, chaleur (${at7.lead_days}j)`, value: fmt(at7.bias_hot) },
+    { label: `Écart`, value: fmt(gap) },
     { label: `p-value (approx.)`, value: pText },
   ];
   row.innerHTML = tiles.map(t => `
@@ -215,8 +215,8 @@ async function renderLocationsComparison(metric, leadDays) {
     data: {
       labels: results.map(r => `${r.name} (n=${r.n_hot})`),
       datasets: [
-        { label: "Normal days", data: results.map(r => r.bias_normal), backgroundColor: COLORS.normal },
-        { label: "Anomalous heat days", data: results.map(r => r.bias_hot), backgroundColor: COLORS.hot },
+        { label: "Jours normaux", data: results.map(r => r.bias_normal), backgroundColor: COLORS.normal },
+        { label: "Jours de chaleur anomale", data: results.map(r => r.bias_hot), backgroundColor: COLORS.hot },
       ],
     },
     options: {
@@ -225,7 +225,7 @@ async function renderLocationsComparison(metric, leadDays) {
       plugins: { legend: { labels: { color: COLORS.text, usePointStyle: true } } },
       scales: {
         x: { ticks: { color: COLORS.muted, maxRotation: 30, minRotation: 30 }, grid: { display: false } },
-        y: { title: { display: true, text: "Mean error (°C)", color: COLORS.text }, ticks: { color: COLORS.muted }, grid: { color: COLORS.grid } },
+        y: { title: { display: true, text: "Erreur moyenne (°C)", color: COLORS.text }, ticks: { color: COLORS.muted }, grid: { color: COLORS.grid } },
       },
     },
   });
@@ -267,7 +267,7 @@ function renderHeatmap(rows) {
       const vals = byCell.get(`${y}-${w}`);
       const v = vals ? mean(vals) : null;
       const color = colorForValue(v, vmax);
-      const title = v === null ? "" : `${y} week ${w}: ${v.toFixed(2)}°C`;
+      const title = v === null ? "" : `${y} semaine ${w} : ${v.toFixed(2)}°C`;
       html += `<td style="background:${color}" title="${title}"></td>`;
     }
     html += "</tr>";

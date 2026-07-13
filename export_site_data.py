@@ -18,6 +18,20 @@ from analyze import add_climatology
 COLUMNS = ["date", "lead_days", "actual_tmax", "actual_tmin", "forecast_tmax",
            "forecast_tmin", "error_tmax", "error_tmin", "is_hot_anomaly"]
 
+# French region labels for the site (locations.csv keeps English - it's also
+# read by the Python analysis scripts/CSVs, which stay in English).
+REGION_FR = {
+    "paris": "Bassin parisien",
+    "lyon": "Vallée du Rhône (climat continental)",
+    "marseille": "Méditerranée",
+    "toulouse": "Sud-Ouest",
+    "nantes": "Côte atlantique",
+    "strasbourg": "Nord-Est (climat continental)",
+    "lille": "Nord",
+    "bordeaux": "Sud-Ouest atlantique",
+    "nice": "Côte d'Azur",
+}
+
 
 def round_or_none(x):
     return None if pd.isna(x) else round(float(x), 2)
@@ -69,7 +83,8 @@ def main():
         with open(out_path, "w") as f:
             json.dump(payload, f, separators=(",", ":"))
         print(f"Wrote {out_path} ({len(payload['rows'])} rows)")
-        meta.append({"name": name, "lat": row["lat"], "lon": row["lon"], "region": row["region"]})
+        meta.append({"name": name, "lat": row["lat"], "lon": row["lon"],
+                     "region": REGION_FR.get(name, row["region"])})
 
     with open(f"{args.out_dir}/locations.json", "w") as f:
         json.dump(meta, f, indent=2)
