@@ -32,7 +32,8 @@ jobs:
             python fetch_previous_runs.py \
               --lat "$lat" --lon "$lon" \
               --start 2022-01-01 --end $(date -u +%Y-%m-%d) \
-              --out "data/$name/leadtime.parquet"
+              --out "data/$name/leadtime.parquet" \
+              || echo "FAILED: $name (leadtime)" | tee -a "$GITHUB_STEP_SUMMARY"
           done
 
       - name: Append today's 10-day-lead observation for all locations
@@ -41,7 +42,8 @@ jobs:
             echo "=== $name ==="
             python fetch_single_run_daily.py \
               --lat "$lat" --lon "$lon" \
-              --out "data/$name/10day_archive.csv"
+              --out "data/$name/10day_archive.csv" \
+              || echo "FAILED: $name (10day)" | tee -a "$GITHUB_STEP_SUMMARY"
           done
 
       - name: Rebuild static site data

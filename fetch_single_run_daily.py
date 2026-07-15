@@ -22,7 +22,8 @@ import sys
 from datetime import date, datetime, timedelta
 
 import pandas as pd
-import requests
+
+from http_utils import get_with_retry
 
 SINGLE_RUN_URL = "https://single-runs-api.open-meteo.com/v1/forecast"
 ARCHIVE_URL = "https://historical-forecast-api.open-meteo.com/v1/forecast"
@@ -42,7 +43,7 @@ def fetch_forecast(lat: float, lon: float, target: date, model: str, timezone: s
         "forecast_days": LEAD_DAYS + 2,
         "timezone": timezone,
     }
-    r = requests.get(SINGLE_RUN_URL, params=params, timeout=60)
+    r = get_with_retry(SINGLE_RUN_URL, params=params, timeout=60)
     if r.status_code != 200:
         return None, r.text
 
@@ -71,7 +72,7 @@ def fetch_actual(lat: float, lon: float, target: date, timezone: str):
         "end_date": target.isoformat(),
         "timezone": timezone,
     }
-    r = requests.get(ARCHIVE_URL, params=params, timeout=60)
+    r = get_with_retry(ARCHIVE_URL, params=params, timeout=60)
     if r.status_code != 200:
         return None, r.text
 

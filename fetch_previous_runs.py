@@ -17,6 +17,8 @@ import sys
 import pandas as pd
 import requests
 
+from http_utils import get_with_retry
+
 API_URL = "https://previous-runs-api.open-meteo.com/v1/forecast"
 
 # GFS has the longest continuous archive (back to March 2021) and stays the
@@ -39,7 +41,7 @@ def fetch_hourly(lat: float, lon: float, start: str, end: str, model: str,
         "timezone": timezone,
     }
     try:
-        r = requests.get(API_URL, params=params, timeout=120)
+        r = get_with_retry(API_URL, params=params, timeout=120)
     except requests.exceptions.SSLError as e:
         print(
             "SSL certificate verification failed. This is common behind corporate "
