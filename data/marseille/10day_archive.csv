@@ -1,0 +1,2 @@
+date,lead_days,model,latitude,longitude,actual_tmax,actual_tmin,forecast_tmax,forecast_tmin,error_tmax,error_tmin
+2026-07-14,10,ecmwf_ifs025,43.2965,5.3698,29.8,26.1,31.9,26.8,-2.099999999999998,-0.6999999999999993
